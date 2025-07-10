@@ -1,23 +1,36 @@
+user-service:
+  url: lb://user-service
 spring:
   application:
-    name: demo-service
+    name: gateway-service
+  main:
+    web-application-type: reactive
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
   liquibase:
     analytics-enabled: true
     change-log: classpath:/db/changelog/database-changelog.yaml
+  cloud:
+    gateway:
+      webflux:
+        discovery:
+          locator:
+            enabled: true
+            lower-case-service-id: true
+      #routes:
+      #  - id: user-service
+      #    uri: lb://user-service
+      #    predicates:
+      #      - Path=/api/v1/user
 kafka:
   bootstrap-servers: localhost:9092
   topic:
 server:
   port: 8080
+
 eureka:
   client:
     service-url:
