@@ -25,6 +25,13 @@ spring:
       #    uri: lb://user-service
       #    predicates:
       #      - Path=/api/v1/user
+keycloak:
+  admin:
+    url: http://localhost:8080
+    realm: 
+    client-id: 
+    client-secret: 
+    
 kafka:
   bootstrap-servers: localhost:9092
   topic:
