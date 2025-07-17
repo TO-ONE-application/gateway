@@ -1,0 +1,54 @@
+user-service:
+  url: lb://user-service
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
+       - org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  application:
+    name: gateway-service
+  main:
+    web-application-type: reactive
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: heyNulleviyDataBasePass
+    driver-class-name: org.postgresql.Driver
+  cloud:
+    gateway:
+      webflux:
+        discovery:
+          locator:
+            enabled: true
+            lower-case-service-id: true
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user
+keycloak:
+  auth-server-url: http://localhost:8082
+  realm: gateway
+  client-id: gateway
+  client-secret: JZ5KRphwEOf0tULKXPI5WhrYvZ0K2TkQ
+    
+kafka:
+  bootstrap-servers: localhost:9092
+  topic:
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
